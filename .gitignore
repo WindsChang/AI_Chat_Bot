@@ -1,0 +1,8 @@
+# 避免誤傳 LINE token、API key 等機敏資料
+Token
+*.token
+.env
+
+# Apps Script clasp 本機設定
+.clasp.json
+.clasprc.json
