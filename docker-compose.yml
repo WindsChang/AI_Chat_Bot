@@ -1,0 +1,33 @@
+services:
+  bot:
+    build: .
+    env_file: .env
+    environment:
+      # log 時間用台北時間
+      TZ: Asia/Taipei
+    ports:
+      - "8000:8000"
+    volumes:
+      # 知識庫：改 config/knowledge.yaml 後馬上生效，不用重啟
+      - ./config:/config:ro
+      # 對話紀錄：放在 Docker volume，重建容器也不會不見
+      - chat-data:/data
+    restart: unless-stopped
+
+  # 只在測試環境使用：把 bot 開一個對外的 HTTPS 網址給 LINE 呼叫
+  # 要加 --profile dev 才會啟動，正式環境不會有這個服務
+  ngrok:
+    profiles: ["dev"]
+    image: ngrok/ngrok:latest
+    command: http bot:8000
+    environment:
+      NGROK_AUTHTOKEN: ${NGROK_AUTHTOKEN:-}
+    ports:
+      # 瀏覽器開 http://localhost:4040 可以看到公開網址與每一筆請求
+      - "4040:4040"
+    depends_on:
+      - bot
+    restart: unless-stopped
+
+volumes:
+  chat-data:

@@ -2,7 +2,24 @@
 Token
 *.token
 .env
+.env.*
+!.env.example
 
-# Apps Script clasp 本機設定
-.clasp.json
-.clasprc.json
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# 本機直接跑程式 (不透過 Docker) 時產生的對話紀錄，可能含客人個資
+*.db
+*.db-journal
+data/
+
+# 編輯器與作業系統
+.vscode/
+.idea/
+Thumbs.db
+Desktop.ini
+.DS_Store
